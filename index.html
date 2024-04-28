@@ -1,92 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Verificación de QR</title>
+  <meta charset="utf-8">
+  <title></title>
   <style>
-    body {
-      background-color: lightblue;
-      text-align: center;
-    }
-    
-    .loading-spinner {
-      display: inline-block;
-      width: 80px;
-      height: 80px;
-    }
-    
-    .loading-spinner div {
-      box-sizing: border-box;
-      display: block;
-      position: absolute;
-      width: 64px;
-      height: 64px;
-      margin: 8px;
-      border: 8px solid #fff;
-      border-radius: 50%;
-      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: #fff transparent transparent transparent;
-    }
-    
-    .loading-spinner div:nth-child(1) {
-      animation-delay: -0.45s;
-    }
-    
-    .loading-spinner div:nth-child(2) {
-      animation-delay: -0.3s;
-    }
-    
-    .loading-spinner div:nth-child(3) {
-      animation-delay: -0.15s;
-    }
-    
-    @keyframes lds-ring {
-      0% {
-        transform: rotate(0deg);
+      body {
+        background-color: lightblue;
+        text-align: center;
       }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+      
+      .lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
   </style>
 </head>
 <body>
-  <div class="loading-spinner">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
   <script>
-    // URL del servicio web para verificar el código QR
     const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbzDDiALMatL2-NhqHIVcDwg6jkRYP9eEDDeXS53wFoVZGW9tFhN8vQIFOA0V4Pq3KU/exec";
     
-    // Función para verificar el código QR
-    function verificarQR() {
-      // Obtener el parámetro 'k' de la URL
-      var url = document.location.href;
-      var k = url.substr(url.lastIndexOf("k=") + 2);
-
-      // Verificar si el parámetro 'k' está presente en la URL
-      if (k) {
-        // Realizar una solicitud fetch al servicio web para verificar el código QR
-        fetch(AS_URL_BASE + '?k=' + k)
-          .then(response => response.text())
-          .then((responseText) => {
-            console.log(responseText);
-            // Si se recibe una respuesta del servicio web
-            if (responseText) {
-              // Redirigir a la URL proporcionada por el servicio web
-              document.location.replace(responseText);
-            }
-          })
-          .catch(error => console.error('Error al verificar el código QR:', error));
-      }
+    var url = document.location.href;
+    var k = url.substr(url.lastIndexOf("k=")+2);
+    
+    if(k){
+      fetch(AS_URL_BASE+'?k='+k)
+      .then(r => r.text())
+      .then((r) => {
+        console.log(r);
+        //document.write(r);
+        if(r){
+          document.location.replace(r);
+        }
+      })
+      .catch(err => console.log(err))
     }
 
-    // Llamar a la función de verificación al cargar la página
-    verificarQR();
   </script>
+  
+  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  
+  
 </body>
 </html>
